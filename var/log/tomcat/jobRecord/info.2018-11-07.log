@@ -1,0 +1,7 @@
+2018-11-07 00:26:22,434 - Starting LoggerTest on DESKTOP-I6VREPK with PID 13208 (started by TvT in D:\workspace\log)
+2018-11-07 00:26:22,434 - No active profile set, falling back to default profiles: default
+2018-11-07 00:26:24,178 - Initializing ExecutorService 'applicationTaskExecutor'
+2018-11-07 00:26:24,532 - Started LoggerTest in 2.718 seconds (JVM running for 4.267)
+2018-11-07 00:26:24,788 - name:hello ,password:world
+2018-11-07 00:26:24,788 - error...
+2018-11-07 00:26:24,794 - Shutting down ExecutorService 'applicationTaskExecutor'
