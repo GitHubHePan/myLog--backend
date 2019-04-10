@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imooc.dao.UserDao">
+    <select id="queryUser" resultType="com.imooc.entity.User">
+        SELECT * FROM seller_info;
+    </select>
+    <select id="queryUserById" resultType="com.imooc.entity.User">
+        SELECT * FROM seller_info where id=#{userId};
+    </select>
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="userId"
+            keyColumn="id" parameterType="com.imooc.entity.User">
+    INSERT INTO
+      seller_info (type, id, username, password, openid)
+    VALUES (#{type}, #{id}, #{username}, #{password}, #{openid});
+    </insert>
+
+    <update id="updateUser" parameterType="com.imooc.entity.User">
+        UPDATE seller_info
+        <set>
+          <if test="username!=null">username=#{username},</if>
+          <if test="password!=null">password=#{password},</if>
+          <if test="openid!=null">openid=#{openid}</if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <delete id="deleteUser">
+        delete from seller_info where id=#{id}
+    </delete>
+</mapper>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imooc.dao.ProductCategoryDao">
+
+    <select id="queryProductCategory" resultType="com.imooc.entity.ProductCategory">
+        SELECT * FROM product_category;
+    </select>
+    <select id="queryProductCategoryById" resultType="com.imooc.entity.ProductCategory">
+        SELECT * FROM product_category where category_id=#{categoryId};
+    </select>
+    <insert id="insertProductCategory" useGeneratedKeys="true" keyProperty="categoryId"
+            keyColumn="id" parameterType="com.imooc.entity.ProductCategory">
+    INSERT INTO
+      product_category (
+        category_id, category_name,
+        category_type)
+    VALUES
+        (
+        #{categoryId}, #{categoryName}, #{categoryType}
+        );
+    </insert>
+
+    <update id="updateProductCategory" parameterType="com.imooc.entity.ProductCategory">
+        UPDATE product_category
+        <set>
+            <if test="categoryName!=null">category_name=#{categoryName},</if>
+            <if test="categoryType!=null">category_type=#{categoryType},</if>
+        </set>
+        where category_id=#{categoryId}
+    </update>
+
+    <delete id="deleteProductCategory">
+        delete from product_category where category_id=#{categoryId}
+    </delete>
+
+    <!--new-->
+    <resultMap  id="getProductBycategoryType" type="com.imooc.VO.ProductVo">
+        <id column="productId" property="product_id" />
+        <result property="productName" column="product_name" />
+        <result property="productPrice" column="product_price" />
+        <result property="productDescription" column="product_description" />
+        <result property="productIcon" column="product_icon" />
+    </resultMap >
+    <select id="getProductInfoBycategory"  resultMap="getProductBycategoryType">
+        SELECT
+            product_id,
+            product_name,
+            product_price,
+            product_description,
+            product_icon
+        FROM
+            product_info
+        WHERE
+            category_type = #{categoryType}
+    </select>
+
+
+    <resultMap  id="categoryVoType" type="com.imooc.VO.CategoryVo">
+        <id property="categoryType" column="category_type" />
+        <result property="categoryName" column="category_name" />
+        <collection property="productVoList" column="category_type" select="getProductInfoBycategory"
+                    ofType="com.imooc.VO.ProductVo"/>
+    </resultMap >
+    <select id="queryProductCategorys" resultMap="categoryVoType">
+        SELECT
+            category_name,
+            category_type
+        FROM
+            product_category
+    </select>
+
+
+
+</mapper>

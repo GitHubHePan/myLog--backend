@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imooc.dao.OrderDetailDao">
+    <select id="queryOrderDetail" resultType="com.imooc.entity.OrderDetail">
+        SELECT * FROM order_detail;
+    </select>
+    <select id="queryOrderDetailById" resultType="com.imooc.entity.OrderDetail">
+        SELECT * FROM order_detail where detail_id=#{detailId};
+    </select>
+    <insert id="insertOrderDetail" useGeneratedKeys="true" keyProperty="detail_id"
+            keyColumn="detail_id" parameterType="com.imooc.entity.OrderDetail">
+        INSERT INTO
+        order_detail (detail_id, order_id, product_id, product_name, product_price,product_quantity,product_icon)
+        VALUES (#{detailId}, #{orderId}, #{productId}, #{productName}, #{productPrice}, #{productQuantity}, #{productIcon});
+    </insert>
+
+    <delete id="deleteOrderDetail">
+        delete from order_detail where detail_id=#{id}
+    </delete>
+
+
+    <insert id="insertOrderDetailList"
+            useGeneratedKeys="true"
+            parameterType="com.imooc.form.ProductInfoForm">
+        insert into order_detail (detail_id,order_id,product_id,product_quantity)
+        values
+        <foreach collection="list" item="item" index="index" separator="," >
+            ((SELECT REPLACE(UUID(), '-', '') AS detail_id),#{item.orderId},#{item.productId},#{item.productQuantity})
+        </foreach>
+    </insert>
+</mapper>

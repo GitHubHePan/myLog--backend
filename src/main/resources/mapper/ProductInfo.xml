@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imooc.dao.ProductInfoDao">
+    <select id="queryProductInfo" resultType="com.imooc.entity.ProductInfo">
+        SELECT * FROM product_info;
+    </select>
+    <select id="queryProductInfoById" resultType="com.imooc.entity.ProductInfo">
+        SELECT * FROM product_info where product_id=#{productId};
+    </select>
+    <insert id="insertProductInfo" useGeneratedKeys="true" keyProperty="productId"
+            keyColumn="id" parameterType="com.imooc.entity.ProductInfo">
+    INSERT INTO
+      product_info (
+        product_id, product_name,
+        product_price, product_stock,
+        product_description,product_icon,
+        product_status,category_type)
+    VALUES
+        (
+        #{productId}, #{productName}, #{productPrice},
+        #{productStock}, #{productDescription}, #{productIcon},
+        #{productStatus}, #{categoryType}
+        );
+    </insert>
+
+    <update id="updateProductInfo" parameterType="com.imooc.entity.ProductInfo">
+        UPDATE product_info
+        <set>
+            <if test="productName!=null">product_name=#{productName},</if>
+            <if test="productPrice!=null">product_price=#{productPrice},</if>
+            <if test="productStock!=null">product_stock=#{productStock},</if>
+            <if test="productDescription!=null">product_description=#{productDescription},</if>
+            <if test="productIcon!=null">product_icon=#{productIcon},</if>
+            <if test="productStatus!=null">product_status=#{productStatus},</if>
+            <if test="categoryType!=null">category_type=#{categoryType},</if>
+        </set>
+        where product_id=#{productId}
+    </update>
+
+    <delete id="deleteProductInfo">
+        delete from product_info where product_id=#{id}
+    </delete>
+</mapper>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imooc.dao.OrderMasterDao">
+
+
+    <select id="queryOrderMaster" resultType="com.imooc.entity.OrderMaster">
+        SELECT * FROM order_master;
+    </select>
+    <select id="queryOrderMasterById" resultType="com.imooc.entity.OrderMaster">
+        SELECT * FROM order_master where order_id=#{id};
+    </select>
+    <insert id="insertOrderMaster" useGeneratedKeys="true" keyProperty="orderId"
+            keyColumn="id" parameterType="com.imooc.entity.OrderMaster">
+    INSERT INTO
+      order_master (
+        order_id, buyer_name,
+        buyer_phone, buyer_address,
+        buyer_openId,order_amount,
+        order_status,pay_status)
+    VALUES (
+        #{orderId}, #{buyerName},
+        #{buyerPhone}, #{buyerAddress},
+        #{buyerOpenId}, #{orderAmount},
+        #{orderStatus}, #{payStatus});
+    </insert>
+
+    <update id="updateOrderMaster" parameterType="com.imooc.entity.OrderMaster">
+        UPDATE order_master
+        <set>
+            <if test="buyerName!=null">buyer_name=#{buyerName},</if>
+            <if test="buyerPhone!=null">buyer_phone=#{buyerPhone},</if>
+            <if test="buyerAddress!=null">buyer_address=#{buyerAddress},</if>
+            <if test="buyerOpenId!=null">buyer_openid=#{buyerOpenId},</if>
+            <if test="orderAmount!=null">order_amount=#{orderAmount},</if>
+            <if test="orderStatus!=null">order_status=#{orderStatus},</if>
+            <if test="payStatus!=null">pay_status=#{payStatus}</if>
+        </set>
+        where order_id=#{orderId}
+    </update>
+
+    <delete id="deleteOrderMaster">
+        delete from order_master where order_id=#{orderId}
+    </delete>
+
+    <insert id="insertOrderMasterGetId" parameterType="com.imooc.form.OrderForm">
+        <selectKey keyProperty="orderId" resultType="string" order="BEFORE">
+            select replace(uuid(), '-', '')
+        </selectKey>
+        INSERT INTO
+        order_master (
+        order_id, buyer_name,
+        buyer_phone, buyer_address,
+        buyer_openId,order_amount,
+        order_status,pay_status)
+        VALUES (
+        #{orderId}, #{name},
+        #{phone}, #{address},
+        #{openid}, 1,
+        1, 1);
+    </insert>
+
+
+</mapper>
